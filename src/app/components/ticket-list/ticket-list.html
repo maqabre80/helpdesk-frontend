@@ -1,0 +1,108 @@
+<div class="app-main">
+  <div class="page-header">
+    <div class="page-header__text">
+      <h1>Listado General de Incidentes</h1>
+      <p>Historial y control de ciclos de vida — Patrón State Machine + Observer.</p>
+    </div>
+    <a routerLink="/reportar" class="btn btn--primary">➕ Nuevo Incidente</a>
+  </div>
+
+  <div *ngIf="mensaje" class="alert alert--success" role="alert">
+    <span class="alert__icon">✓</span>
+    <div class="alert__content"><strong>{{ mensaje }}</strong></div>
+  </div>
+
+  <div *ngIf="error" class="alert alert--danger" role="alert">
+    <span class="alert__icon">!</span>
+    <div class="alert__content"><strong>{{ error }}</strong></div>
+  </div>
+
+  <div *ngIf="cargando" class="alert alert--info" role="status">
+    <span class="alert__icon">⏳</span>
+    <div class="alert__content"><strong>Cargando tickets desde MongoDB Atlas...</strong></div>
+  </div>
+
+  <section *ngIf="!cargando">
+
+    <!-- Tabla para pantallas grandes -->
+    <div class="table-wrapper">
+      <table class="ticket-table">
+        <caption>Monitoreo de Tickets de Infraestructura — {{ tickets.length }} registros</caption>
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Título</th>
+            <th scope="col">Categoría</th>
+            <th scope="col">Prioridad</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Técnico</th>
+            <th scope="col">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let ticket of tickets">
+            <td class="u-font-mono u-text-sm">{{ ticket.id?.slice(-6) }}</td>
+            <td class="ticket-title">{{ ticket.titulo }}</td>
+            <td><span class="badge" [ngClass]="getBadgeClass(ticket.categoria || '')">{{ ticket.categoria }}</span></td>
+            <td><span class="badge" [ngClass]="getBadgeClass(ticket.prioridad || '')">{{ ticket.prioridad }}</span></td>
+            <td>
+              <select class="form-control"
+                      style="width:auto;font-size:0.75rem;padding:4px 8px"
+                      [value]="ticket.estado"
+                      (change)="cambiarEstado(ticket, $any($event.target).value)">
+                <option value="Abierto">Abierto</option>
+                <option value="En Progreso">En Progreso</option>
+                <option value="Resuelto">Resuelto</option>
+              </select>
+            </td>
+            <td class="u-text-sm">{{ ticket.tecnico }}</td>
+            <td>
+              <button class="btn btn--danger btn--sm"
+                      (click)="eliminarTicket(ticket)">
+                🗑️ Eliminar
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="tickets.length === 0">
+            <td colspan="7" style="text-align:center;padding:2rem;color:var(--ink-soft)">
+              No hay tickets registrados. <a routerLink="/reportar">Crear el primero →</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Tarjetas para móvil -->
+    <div style="margin-top:var(--space-6)">
+      <div *ngFor="let ticket of tickets" class="card card--ticket u-stack"
+           [attr.data-status]="ticket.estado === 'Critica' ? 'critico' :
+                               ticket.estado === 'Abierto' ? 'nuevo' :
+                               ticket.estado === 'En Progreso' ? 'pendiente' : 'resuelto'"
+           style="margin-bottom:var(--space-4)">
+        <div class="card__header">
+          <div>
+            <h3>{{ ticket.titulo }}</h3>
+            <span class="mono" style="font-size:var(--text-xs);color:var(--ink-soft)">
+              {{ ticket.id?.slice(-8) }}
+            </span>
+          </div>
+          <span class="badge" [ngClass]="getBadgeClass(ticket.prioridad || '')">
+            {{ ticket.prioridad }}
+          </span>
+        </div>
+        <div class="card__body">
+          <p>{{ ticket.descripcion }}</p>
+        </div>
+        <div class="card__footer">
+          <span class="badge" [ngClass]="getBadgeClass(ticket.estado || '')">{{ ticket.estado }}</span>
+          <span class="badge" [ngClass]="getBadgeClass(ticket.categoria || '')">{{ ticket.categoria }}</span>
+          <button class="btn btn--danger btn--sm" style="margin-left:auto"
+                  (click)="eliminarTicket(ticket)">
+            🗑️
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </section>
+</div>

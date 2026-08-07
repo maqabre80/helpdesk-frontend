@@ -1,0 +1,116 @@
+<div class="app-main">
+  <div class="page-header">
+    <div class="page-header__text">
+      <h1>Registrar Nuevo Incidente</h1>
+      <p>Complete los datos del fallo. El motor de asignación derivará el caso al técnico especialista.</p>
+    </div>
+  </div>
+
+  <div *ngIf="mensaje" class="alert alert--success" role="alert">
+    <span class="alert__icon">✓</span>
+    <div class="alert__content"><strong>{{ mensaje }}</strong></div>
+  </div>
+
+  <div *ngIf="error" class="alert alert--danger" role="alert">
+    <span class="alert__icon">!</span>
+    <div class="alert__content"><strong>{{ error }}</strong></div>
+  </div>
+
+  <section>
+    <div class="form-card">
+      <div class="form-card__header">
+        <div class="form-card__header-icon">📝</div>
+        <div>
+          <h2>Formulario de Registro de Fallo Técnico</h2>
+          <p>Patrón Factory Method — clasificación automática por categoría</p>
+        </div>
+      </div>
+
+      <div class="form-card__body">
+        <form (ngSubmit)="onSubmit()" #formRef="ngForm">
+          <div class="form-grid">
+
+            <div class="form-field">
+              <label for="titulo">
+                Título del Incidente <span class="req">*</span>
+              </label>
+              <input
+                type="text"
+                id="titulo"
+                name="titulo"
+                class="form-control"
+                [(ngModel)]="ticket.titulo"
+                placeholder="Ej. Caída de enlace switch core"
+                required
+                maxlength="200">
+              <span class="form-hint">Describa brevemente el fallo detectado.</span>
+            </div>
+
+            <div class="form-field">
+              <label for="categoria">
+                Categoría <span class="req">*</span>
+              </label>
+              <select
+                id="categoria"
+                name="categoria"
+                class="form-control"
+                [(ngModel)]="ticket.categoria"
+                required>
+                <option value="">— Seleccione una categoría —</option>
+                <option value="Hardware">🖥️ Hardware — Servidores / Almacenamiento</option>
+                <option value="Red">🌐 Redes — Cisco / Fortinet / VLANs</option>
+                <option value="Software">💾 Software — Debian / Servicios NFS / BD</option>
+              </select>
+            </div>
+
+            <div class="form-field form-grid--full">
+              <label>Nivel de Prioridad <span class="req">*</span></label>
+              <div class="radio-group" role="radiogroup">
+                <label class="radio-option">
+                  <input type="radio" name="prioridad" value="Baja" [(ngModel)]="ticket.prioridad"> 🟢 Baja
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="prioridad" value="Media" [(ngModel)]="ticket.prioridad"> 🟡 Media
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="prioridad" value="Alta" [(ngModel)]="ticket.prioridad"> 🟠 Alta
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="prioridad" value="Critica" [(ngModel)]="ticket.prioridad"> 🔴 Crítica
+                </label>
+              </div>
+            </div>
+
+            <div class="form-field form-grid--full">
+              <label for="descripcion">
+                Descripción Detallada <span class="req">*</span>
+              </label>
+              <textarea
+                id="descripcion"
+                name="descripcion"
+                class="form-control"
+                [(ngModel)]="ticket.descripcion"
+                placeholder="Síntomas detectados, trazas de comandos, logs de error..."
+                required
+                maxlength="2000"
+                rows="5">
+              </textarea>
+              <span class="form-hint">Incluya síntomas, comandos ejecutados y logs de error.</span>
+            </div>
+
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn--primary btn--lg" [disabled]="enviando">
+              {{ enviando ? '⏳ Enviando...' : '🚀 Enviar Ticket a Soporte' }}
+            </button>
+            <button type="button" class="btn btn--secondary" (click)="limpiar()">
+              🗑️ Limpiar Formulario
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </section>
+</div>

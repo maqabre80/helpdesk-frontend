@@ -1,0 +1,26 @@
+<header class="app-topbar">
+  <div class="app-topbar__brand">
+    <div class="app-topbar__brand-icon">🖥</div>
+    <div>
+      <div>Help Desk UTM</div>
+      <div class="app-topbar__brand-sub">Infraestructura &amp; Data Center</div>
+    </div>
+  </div>
+
+  <button class="nav-toggle" (click)="toggleMenu()" aria-label="Abrir menú">
+    <span></span><span></span><span></span>
+  </button>
+
+  <nav class="app-nav" [class.nav-open]="menuAbierto">
+    <a routerLink="/"        routerLinkActive="active"
+       [routerLinkActiveOptions]="{exact:true}" class="app-nav__link">
+      📊 Dashboard
+    </a>
+    <a routerLink="/reportar" routerLinkActive="active" class="app-nav__link">
+      ➕ Reportar Incidente
+    </a>
+    <a routerLink="/tickets"  routerLinkActive="active" class="app-nav__link">
+      🎫 Lista de Tickets
+    </a>
+  </nav>
+</header>

@@ -1,0 +1,84 @@
+<div class="app-main">
+
+  <div class="page-header">
+    <div class="page-header__text">
+      <h1>Panel de Control en Tiempo Real</h1>
+      <p>Métricas globales de disponibilidad del servicio y rendimiento técnico.</p>
+    </div>
+    <a routerLink="/reportar" class="btn btn--primary btn--lg">
+      ➕ Nuevo Incidente
+    </a>
+  </div>
+
+  <div class="alert alert--warning" role="alert">
+    <span class="alert__icon">!</span>
+    <div class="alert__content">
+      <strong>Sistema activo</strong>
+      Monitoreando incidentes en tiempo real desde MongoDB Atlas.
+    </div>
+  </div>
+
+  <!-- Métricas -->
+  <section aria-labelledby="metricas-titulo">
+    <h2 id="metricas-titulo" class="u-text-muted u-text-sm u-mb-5"
+        style="text-transform:uppercase;letter-spacing:.08em;font-weight:700;">
+      Métricas globales
+    </h2>
+    <div class="metrics-grid">
+      <article class="metric-card metric-card--primary">
+        <div class="metric-card__icon">🎫</div>
+        <div class="metric-card__label">Total Tickets</div>
+        <div class="metric-card__value">{{ totalTickets }}</div>
+        <div class="metric-card__sub">Registrados en el sistema</div>
+      </article>
+
+      <article class="metric-card metric-card--warning">
+        <div class="metric-card__icon">🟡</div>
+        <div class="metric-card__label">Tickets Abiertos</div>
+        <div class="metric-card__value">{{ ticketsAbiertos }}</div>
+        <div class="metric-card__sub">Pendientes de atención</div>
+      </article>
+
+      <article class="metric-card metric-card--success">
+        <div class="metric-card__icon">✅</div>
+        <div class="metric-card__label">Resueltos</div>
+        <div class="metric-card__value">{{ ticketsResueltos }}</div>
+        <div class="metric-card__sub">Incidentes cerrados</div>
+      </article>
+    </div>
+  </section>
+
+  <!-- Categorías -->
+  <section style="margin-top: var(--space-7);">
+    <div class="page-header" style="margin-bottom: var(--space-4);">
+      <div class="page-header__text">
+        <h2>Categorías del Sistema</h2>
+        <p>Clasificación Factory Method para despliegue de componentes especializados.</p>
+      </div>
+    </div>
+    <div class="categories-grid">
+      <article class="category-card">
+        <div class="category-card__icon">🖥️</div>
+        <div class="category-card__info">
+          <h3>Hardware</h3>
+          <p>Servidores físicos, almacenamiento TrueNAS, memoria RAM, arreglos RAID.</p>
+        </div>
+      </article>
+      <article class="category-card">
+        <div class="category-card__icon">🌐</div>
+        <div class="category-card__info">
+          <h3>Red</h3>
+          <p>Enrutadores, switches Cisco, reglas FortiGate, VLANs y firewall.</p>
+        </div>
+      </article>
+      <article class="category-card">
+        <div class="category-card__icon">💾</div>
+        <div class="category-card__info">
+          <h3>Software</h3>
+          <p>Sistemas operativos Debian/CentOS, servicios NFS, bases de datos.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+</div>
