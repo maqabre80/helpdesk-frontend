@@ -19,7 +19,7 @@ export interface Ticket {
 export class TicketService {
 
   // URL del backend — cambiar por la URL de Render al desplegar
-  private apiUrl = 'http://localhost:8080/api/tickets';
+  private apiUrl = 'https://helpdesk-backend-ghpx.onrender.com/api/tickets';
 
   constructor(private http: HttpClient) {}
 
