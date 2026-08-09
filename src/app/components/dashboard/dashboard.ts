@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { TicketService, Ticket } from '../../services/ticket';
@@ -16,14 +16,24 @@ export class DashboardComponent implements OnInit {
   ticketsResueltos = 0;
   ticketsEnProgreso = 0;
 
-  constructor(private ticketService: TicketService) {}
+  constructor(
+    private ticketService: TicketService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
-    this.ticketService.getTickets().subscribe((tickets: Ticket[]) => {
-      this.totalTickets      = tickets.length;
-      this.ticketsAbiertos   = tickets.filter(t => t.estado === 'Abierto').length;
-      this.ticketsResueltos  = tickets.filter(t => t.estado === 'Resuelto').length;
-      this.ticketsEnProgreso = tickets.filter(t => t.estado === 'En Progreso').length;
+    this.ticketService.getTickets().subscribe({
+      next: (tickets: Ticket[]) => {
+        this.totalTickets      = tickets.length;
+        this.ticketsAbiertos   = tickets.filter(t => t.estado === 'Abierto').length;
+        this.ticketsResueltos  = tickets.filter(t => t.estado === 'Resuelto').length;
+        this.ticketsEnProgreso = tickets.filter(t => t.estado === 'En Progreso').length;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error cargando tickets:', err);
+        this.cdr.detectChanges();
+      }
     });
   }
 }
