@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { TicketService, Ticket } from '../../services/ticket';
@@ -16,7 +16,10 @@ export class TicketListComponent implements OnInit {
   error = '';
   mensaje = '';
 
-  constructor(private ticketService: TicketService) {}
+  constructor(
+    private ticketService: TicketService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
     this.cargarTickets();
@@ -28,10 +31,12 @@ export class TicketListComponent implements OnInit {
       next: (data) => {
         this.tickets = data;
         this.cargando = false;
+        this.cdr.detectChanges();
       },
       error: (err) => {
-        this.error = 'Error al cargar los tickets. Verifique la conexión con el servidor.';
+        this.error = 'Error al cargar los tickets.';
         this.cargando = false;
+        this.cdr.detectChanges();
         console.error(err);
       }
     });
@@ -43,11 +48,13 @@ export class TicketListComponent implements OnInit {
       next: () => {
         ticket.estado = nuevoEstado;
         this.mensaje = `✅ Estado actualizado a "${nuevoEstado}"`;
-        setTimeout(() => this.mensaje = '', 3000);
+        this.cdr.detectChanges();
+        setTimeout(() => { this.mensaje = ''; this.cdr.detectChanges(); }, 3000);
       },
       error: () => {
         this.error = '❌ Error al actualizar el estado.';
-        setTimeout(() => this.error = '', 3000);
+        this.cdr.detectChanges();
+        setTimeout(() => { this.error = ''; this.cdr.detectChanges(); }, 3000);
       }
     });
   }
@@ -59,11 +66,13 @@ export class TicketListComponent implements OnInit {
       next: () => {
         this.tickets = this.tickets.filter(t => t.id !== ticket.id);
         this.mensaje = '✅ Ticket eliminado correctamente.';
-        setTimeout(() => this.mensaje = '', 3000);
+        this.cdr.detectChanges();
+        setTimeout(() => { this.mensaje = ''; this.cdr.detectChanges(); }, 3000);
       },
       error: () => {
         this.error = '❌ Error al eliminar el ticket.';
-        setTimeout(() => this.error = '', 3000);
+        this.cdr.detectChanges();
+        setTimeout(() => { this.error = ''; this.cdr.detectChanges(); }, 3000);
       }
     });
   }
